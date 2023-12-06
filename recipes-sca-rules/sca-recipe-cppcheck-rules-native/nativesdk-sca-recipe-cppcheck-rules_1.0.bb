@@ -13,9 +13,9 @@ SRC_URI = "\
 inherit nativesdk
 
 do_install() {
-    install -d "${D}${datadir}"
-    install "${WORKDIR}/suppress" "${D}${datadir}/cppcheck-recipe-suppress"
-    install "${WORKDIR}/fatal" "${D}${datadir}/cppcheck-recipe-fatal"
+    install -d "${D}${datadir}/cppcheck"
+    install "${WORKDIR}/suppress" "${D}${datadir}/cppcheck/cppcheck-recipe-suppress"
+    install "${WORKDIR}/fatal" "${D}${datadir}/cppcheck/cppcheck-recipe-fatal"
 }
 
 FILES:${PN} = "${datadir}"

@@ -1,0 +1,53 @@
+From 0c566b5756b0503205cbfa69bca939db996d9b11 Mon Sep 17 00:00:00 2001
+From: Tom Kamberg-Buhrtz <buhrtz@melag.de>
+Date: Tue, 5 Dec 2023 14:41:27 +0100
+Subject: [PATCH] Add additional search paths for configurations files, addons
+ and platforms
+
+---
+ lib/cppcheck.cpp | 2 ++
+ lib/library.cpp  | 1 +
+ lib/platform.cpp | 2 ++
+ 3 files changed, 5 insertions(+)
+
+diff --git a/lib/cppcheck.cpp b/lib/cppcheck.cpp
+index 481617d34..787539863 100644
+--- a/lib/cppcheck.cpp
++++ b/lib/cppcheck.cpp
+@@ -124,6 +124,8 @@ namespace {
+                 return exepath + fileName;
+             if (Path::isFile(exepath + "addons/" + fileName))
+                 return exepath + "addons/" + fileName;
++            if (Path::isFile(exepath + "../share/cppcheck/addons/" + fileName))
++                return exepath + "../share/cppcheck/addons/" + fileName;
+ 
+ #ifdef FILESDIR
+             if (Path::isFile(FILESDIR + ("/" + fileName)))
+diff --git a/lib/library.cpp b/lib/library.cpp
+index 15d649171..abbe88e41 100644
+--- a/lib/library.cpp
++++ b/lib/library.cpp
+@@ -108,6 +108,7 @@ Library::Error Library::load(const char exename[], const char path[])
+             cfgfolders.push_back(exepath + "cfg");
+             cfgfolders.push_back(exepath + "../cfg");
+             cfgfolders.push_back(exepath);
++            cfgfolders.push_back(exepath + "../share/cppcheck/cfg");
+         }
+ 
+         while (error == tinyxml2::XML_ERROR_FILE_NOT_FOUND && !cfgfolders.empty()) {
+diff --git a/lib/platform.cpp b/lib/platform.cpp
+index cf6235c90..3c689c13e 100644
+--- a/lib/platform.cpp
++++ b/lib/platform.cpp
+@@ -209,6 +209,8 @@ bool cppcheck::Platform::loadFromFile(const char exename[], const std::string &f
+         filenames.push_back(Path::getPathFromFilename(Path::fromNativeSeparators(exename)) + filename);
+         filenames.push_back(Path::getPathFromFilename(Path::fromNativeSeparators(exename)) + "platforms/" + filename);
+         filenames.push_back(Path::getPathFromFilename(Path::fromNativeSeparators(exename)) + "platforms/" + filename + ".xml");
++        filenames.push_back(Path::getPathFromFilename(Path::fromNativeSeparators(exename)) + "../share/cppcheck/platforms/" + filename);
++        filenames.push_back(Path::getPathFromFilename(Path::fromNativeSeparators(exename)) + "../share/cppcheck/platforms/" + filename + ".xml");
+     }
+ #ifdef FILESDIR
+     std::string filesdir = FILESDIR;
+-- 
+2.25.1
+

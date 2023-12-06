@@ -13,6 +13,7 @@ LIC_FILES_CHKSUM = "\
 
 SRC_URI = "\
     git://github.com/danmar/cppcheck.git;protocol=https;nobranch=1 \
+    file://0001-Add-additional-search-paths-for-configurations-files.patch \
 "
 SRCREV = "65da79394471784641568dc4ac5da5466599809d"
 
@@ -30,7 +31,7 @@ do_compile() {
     oe_runmake ${PACKAGECONFIG_CONFARGS} FILESDIR=.
 }
 do_install() {
-    oe_runmake install DESTDIR=${D} FILESDIR=${datadir} PREFIX=${prefix}
+    oe_runmake install DESTDIR=${D} FILESDIR=${datadir}/cppcheck PREFIX=${prefix}
 }
 FILES:${PN} = "${bindir} ${datadir}"
 UPSTREAM_CHECK_GITTAGREGEX = "(?P<pver>\d+\.\d+(\.\d+)*)$"
